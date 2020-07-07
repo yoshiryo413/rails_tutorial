@@ -1,0 +1,68 @@
+<div class="row">
+    <div class="col-md-12">
+        
+        <h2><%= @question.title %></h2>
+        <div>
+            content: <%= @question.content %>
+        </div>
+        <div>
+            name: <%= @question.name %>
+        </div>
+        <hr>
+        
+        <div>
+            <h3>Answers</h3>
+            <table class="table table-striped">
+                <%if @question.answer.any? %>
+                    <thead class="thead-light">
+                        <tr>
+                            <td>Answer</td>
+                            <td>name</td>
+                            <td>Meue</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @question.answer.each do |answer| %>
+                            <tr>
+                                <td>
+                                    <%= answer.content %>
+                                </td>
+                                <td>
+                                    <%= answer.name %>
+                                </td>
+                                <td>
+                                    [<%= link_to 'EDit', edit_question_answer_path(@question, answer) %> ]
+                                    [<%= link_to 'delete', question_answer_path(@question, answer), method: :delete, date:{ confirm: 'Are you sure?'} %>]
+                                </td>
+                            </tr>
+                            <% end %>
+                    </tbody>
+                <% else %>
+                    <p>No answer</p>
+                <% end %>
+            </table>
+        </div>
+        
+        
+        <h3>Post new answer</h3>
+        
+        <%= form_with model: [@question, @answer], local: true do |f| %>
+            <%= f.hidden_field :question_id, { value: @question.id} %>
+            <div class="group">
+                <label>Name</label>
+                <%= f.text_field :name, class: 'form-control' %>
+            </div>
+            <div class="group">
+                <label>Content</label>
+                <%= f.text_area :content, class: 'form-control' %>
+            </div>
+            <div class="tent-center">
+                <%= f.submit "post", class: 'btn btn-primary' %>
+            </div>
+        <% end %>
+        <div>
+            <%= link_to '> home' , root_path %>
+        </div>
+        
+    </div>
+</div>
